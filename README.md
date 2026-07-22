@@ -9,6 +9,13 @@ to a server — the two files you drop in are parsed in memory and the finished
 workbook is generated and downloaded locally. Safe for sensitive payroll data,
 and it works fully offline.
 
+**Live app:** https://fhg-payroll-qb-converter.vercel.app
+
+> The hosted version loads the spreadsheet engine (`xlsx-js-style`) from a public
+> CDN (jsDelivr, with an unpkg fallback). The copy in this repo is fully
+> self-contained — it vendors the engine under `vendor/` so it runs with no
+> network access at all. Both process your files entirely in the browser.
+
 ---
 
 ## What it does
