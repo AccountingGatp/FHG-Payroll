@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payroll → QuickBooks Import Converter</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231F3864'/%3E%3Ctext x='8' y='12' font-size='10' fill='white' text-anchor='middle' font-family='Arial'%3EQ%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="wrap">
+        <h1>Payroll&nbsp;→&nbsp;QuickBooks Journal Import</h1>
+        <p class="tagline">
+          Convert a Payworks payroll export into a balanced, import-ready
+          QuickBooks journal workbook. Everything runs in your browser — no
+          payroll data ever leaves this page.
+        </p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <!-- STEP 1 — files -->
+      <section class="card" id="step-files">
+        <h2><span class="step-num">1</span> Upload your two files</h2>
+        <div class="drop-grid">
+          <label class="dropzone" id="dz-input">
+            <input type="file" id="file-input" accept=".xlsx,.xls" hidden />
+            <div class="dz-icon">📄</div>
+            <div class="dz-title">Payroll input</div>
+            <div class="dz-hint">Payworks export — the one-sheet file</div>
+            <div class="dz-status" id="status-input">Click or drop file</div>
+          </label>
+
+          <label class="dropzone" id="dz-master">
+            <input type="file" id="file-master" accept=".xlsx,.xls" hidden />
+            <div class="dz-icon">📚</div>
+            <div class="dz-title">Master Account List</div>
+            <div class="dz-hint">Books · Memo · AccountName</div>
+            <div class="dz-status" id="status-master">Click or drop file</div>
+          </label>
+        </div>
+        <div class="msg error" id="file-error" hidden></div>
+      </section>
+
+      <!-- STEP 2 — confirm -->
+      <section class="card" id="step-confirm" hidden>
+        <h2><span class="step-num">2</span> Confirm book &amp; dates</h2>
+
+        <div class="confirm-grid">
+          <div class="field">
+            <label for="book-select">Book / GL to pull accounts from</label>
+            <select id="book-select"></select>
+            <p class="recommend" id="book-reason"></p>
+          </div>
+
+          <div class="field">
+            <label for="new-date">New Month journal date</label>
+            <input type="date" id="new-date" />
+            <p class="hint" id="new-jno"></p>
+          </div>
+
+          <div class="field">
+            <label for="old-date">Old Month journal date</label>
+            <input type="date" id="old-date" />
+            <p class="hint" id="old-jno"></p>
+          </div>
+        </div>
+
+        <details class="advanced" id="class-advanced">
+          <summary>
+            Class IDs → names <span class="pill" id="class-count"></span>
+          </summary>
+          <p class="hint">
+            The Class column carries numeric IDs. Optionally map them to your QBO
+            class names — one per line as <code>ID = Name</code> (or
+            <code>ID,Name</code>). Unmapped IDs are kept as-is. Blank classes stay
+            blank.
+          </p>
+          <textarea
+            id="class-map"
+            rows="5"
+            placeholder="2 = Fredericton&#10;4 = Moncton&#10;51429 = Saint John"
+          ></textarea>
+          <div class="detected-ids" id="detected-ids"></div>
+        </details>
+
+        <div class="msg warn" id="unmapped-preview" hidden></div>
+
+        <div class="actions">
+          <button class="btn primary" id="btn-generate">
+            Generate QuickBooks import workbook
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 3 — result -->
+      <section class="card" id="step-result" hidden>
+        <h2><span class="step-num">3</span> Result</h2>
+        <div id="summary-cards" class="summary-cards"></div>
+        <div class="msg warn" id="result-unmapped" hidden></div>
+        <div class="actions">
+          <button class="btn primary" id="btn-download">
+            ⬇ Download workbook
+          </button>
+          <span class="filename" id="download-name"></span>
+        </div>
+        <details class="advanced">
+          <summary>What's in the workbook</summary>
+          <ul class="explain">
+            <li>
+              <strong>Summary</strong> — per-month journal no, date, line count,
+              formula-driven Total Debit / Credit / Difference, and a
+              BALANCED status. Lists the clearing rounding adjustment and any
+              unmapped memos.
+            </li>
+            <li>
+              <strong>New Month</strong> — journal lines dated to the input
+              header date, amounts from the “New Month” column.
+            </li>
+            <li>
+              <strong>Old Month</strong> — journal lines dated to the prior
+              month-end, amounts from the “Old Month” column.
+            </li>
+          </ul>
+        </details>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="wrap">
+        GATP Solutions · Payroll → QuickBooks converter · processed entirely in
+        your browser
+      </div>
+    </footer>
+
+    <script src="vendor/xlsx.bundle.js"></script>
+    <script src="converter.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
