@@ -58,8 +58,15 @@ white bold text, alternating row fills, currency format
 
 ## Using it
 
-**Locally** — just open `index.html` in any modern browser (double-click it, or
-serve the folder):
+**Offline single file (easiest)** — download **`Payroll-QB-Converter.html`** and
+double-click it. Everything (the spreadsheet engine, logic, and styling) is
+inlined into that one file, so it runs with no server, no internet, and no other
+files. Ideal for handling payroll data on a locked-down machine — keep it on
+your desktop or a shared drive and just open it.
+
+**Locally from the repo** — or open `index.html` in any modern browser (it loads
+its engine from `vendor/`, also fully offline). Double-click it, or serve the
+folder:
 
 ```bash
 python3 -m http.server 8000
